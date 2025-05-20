@@ -9,7 +9,7 @@ namespace Hospital_Management.Model
         [Required]
         public string Name { get; set; }
         public bool IsActive { get; set; }
-        public ICollection<User> Doctors { get; set; }
+        public ICollection<Doctor> Doctors { get; set; }
         public ICollection<MedicalHistory> MedicalHistories { get; set; }
     }
 }

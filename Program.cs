@@ -1,5 +1,8 @@
 
+using Hospital_Management.Controllers;
 using Hospital_Management.Data;
+using Hospital_Management.Services;
+using Hospital_Management.Services.IServices;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hospital_Management
@@ -17,6 +20,7 @@ namespace Hospital_Management
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddScoped<IPatientService, PatientService>();
 
             var app = builder.Build();
 
@@ -27,10 +31,11 @@ namespace Hospital_Management
                 app.UseSwaggerUI();
             }
 
+            app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

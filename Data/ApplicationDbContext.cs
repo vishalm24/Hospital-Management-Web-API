@@ -13,42 +13,44 @@ namespace Hospital_Management.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<MedicalHistory> MedicalHistories { get; set; }
+        public DbSet<Doctor> Doctors { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().HasOne(u => u.Department)
+            modelBuilder.Entity<Doctor>().HasOne(dc => dc.Department)
                 .WithMany(d => d.Doctors)
-                .HasForeignKey(u => u.DepartmentId)
-                .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<User>().HasOne(u => u.Admin)
+                .HasForeignKey(u => u.DepartmentId);
+            modelBuilder.Entity<Doctor>().HasOne(dc =>dc.Admin)
                 .WithMany(u => u.Users)
+                .HasForeignKey(u => u.AdminId);
+            modelBuilder.Entity<User>().HasOne(u => u.Admin)
+                .WithMany(u => u.UserAdminIds)
                 .HasForeignKey(u => u.AdminId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Appointment>().HasOne(a => a.Patient)
                 .WithMany(p => p.Appointments)
                 .HasForeignKey(a => a.PatientId);
             modelBuilder.Entity<Appointment>().HasOne(a => a.Doctor)
-                .WithMany(u => u.DoctorAppointments)
+                .WithMany(u => u.Appointments)
                 .HasForeignKey(a => a.DoctorId);
             modelBuilder.Entity<Appointment>().HasOne(a => a.Receptionist)
-                .WithMany(u => u.ReceptionistAppointments)
+                .WithMany(u => u.Appointments)
                 .HasForeignKey(a => a.ReceptionistId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<MedicalHistory>().HasOne(a => a.Patient)
                 .WithMany(p => p.MedicalHistories)
                 .HasForeignKey(a => a.PatientId);
             modelBuilder.Entity<MedicalHistory>().HasOne(a => a.Doctor)
-                .WithMany(u => u.MedicalHistories)
+                .WithMany(dc => dc.MedicalHistories)
                 .HasForeignKey(a => a.DoctorId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<MedicalHistory>().HasOne(a => a.Department)
                 .WithMany(d => d.MedicalHistories)
                 .HasForeignKey(a => a.DepartmentId);
             modelBuilder.Entity<Leave>().HasOne(l => l.Doctor)
-                .WithMany(u => u.Leaves)
-                .HasForeignKey(l => l.DoctorId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .WithMany(dc => dc.Leaves)
+                .HasForeignKey(l => l.DoctorId);
             modelBuilder.Entity<Leave>().HasOne(l => l.Admin)
-                .WithMany(u => u.AdminIds)
+                .WithMany(u => u.DoctorAdminIds)
                 .HasForeignKey(l => l.AdminId)
                 .OnDelete(DeleteBehavior.Restrict);
         }

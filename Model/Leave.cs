@@ -9,13 +9,13 @@ namespace Hospital_Management.Model
         [Key]
         public int Id { get; set; }
         [Required]
-        [ForeignKey("User")]
+        [ForeignKey("Doctor")]
         public int DoctorId { get; set; }
-        public virtual User Doctor { get; set; }
+        public virtual Doctor Doctor { get; set; }
         [Required]
-        public DateTime StartDate { get; set; }
+        public DateOnly StartDate { get; set; }
         [Required]
-        public DateTime EndDate { get; set; }
+        public DateOnly EndDate { get; set; }
         [Required]
         public string Reason { get; set; }
         [Required]

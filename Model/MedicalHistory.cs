@@ -13,9 +13,9 @@ namespace Hospital_Management.Model
         [ForeignKey("Patient")]
         public int PatientId { get; set; }
         public virtual Patient Patient { get; set; }
-        [ForeignKey("User")]
+        [ForeignKey("Doctor")]
         public int DoctorId { get; set; }
-        public virtual User Doctor { get; set; }
+        public virtual Doctor Doctor { get; set; }
         [ForeignKey("Department")]
         public int DepartmentId { get; set; }
         public virtual Department Department { get; set; }

@@ -12,9 +12,9 @@ namespace Hospital_Management.Model
         public int PatientId { get; set; }
         public virtual Patient Patient { get; set; }
         [Required]
-        [ForeignKey("User")]
+        [ForeignKey("Doctor")]
         public int DoctorId { get; set; }
-        public virtual User Doctor { get; set; }
+        public virtual Doctor Doctor { get; set; }
         [Required]
         [ForeignKey("User")]
         public int ReceptionistId { get; set; }
@@ -23,7 +23,8 @@ namespace Hospital_Management.Model
         public DateTime CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
         [Required]
-        public DateTime AppointmentDate { get; set; }
+        public DateTime AppointmentStart { get; set; }
+        public DateTime AppointmentEnd { get; set; }
         [Required]
         public string AppointmentStatus { get; set; }
     }
