@@ -18,10 +18,16 @@ namespace Hospital_Management.Data
         {
             modelBuilder.Entity<Doctor>().HasOne(dc => dc.Department)
                 .WithMany(d => d.Doctors)
-                .HasForeignKey(u => u.DepartmentId);
+                .HasForeignKey(dc => dc.DepartmentId)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Doctor>().HasOne(dc =>dc.Admin)
                 .WithMany(u => u.Users)
-                .HasForeignKey(u => u.AdminId);
+                .HasForeignKey(dc => dc.AdminId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Doctor>().HasOne(dc => dc.user)
+                .WithOne(u => u.doctor)
+                .HasForeignKey<Doctor>(dc => dc.DoctorId)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<User>().HasOne(u => u.Admin)
                 .WithMany(u => u.UserAdminIds)
                 .HasForeignKey(u => u.AdminId)

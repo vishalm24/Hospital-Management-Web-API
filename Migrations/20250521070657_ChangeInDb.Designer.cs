@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hospital_Management.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250520094901_InitialSetup")]
-    partial class InitialSetup
+    [Migration("20250521070657_ChangeInDb")]
+    partial class ChangeInDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -103,11 +103,17 @@ namespace Hospital_Management.Migrations
                     b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AdminId");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("DoctorId")
+                        .IsUnique();
 
                     b.ToTable("Doctors");
                 });
@@ -238,12 +244,7 @@ namespace Hospital_Management.Migrations
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Patients");
                 });
@@ -260,7 +261,7 @@ namespace Hospital_Management.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("AdminId")
+                    b.Property<int?>("AdminId")
                         .HasColumnType("int");
 
                     b.Property<string>("City")
@@ -340,18 +341,26 @@ namespace Hospital_Management.Migrations
                     b.HasOne("Hospital_Management.Model.User", "Admin")
                         .WithMany("Users")
                         .HasForeignKey("AdminId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Hospital_Management.Model.Department", "Department")
                         .WithMany("Doctors")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Hospital_Management.Model.User", "user")
+                        .WithOne("doctor")
+                        .HasForeignKey("Hospital_Management.Model.Doctor", "DoctorId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Admin");
 
                     b.Navigation("Department");
+
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("Hospital_Management.Model.Leave", b =>
@@ -400,20 +409,12 @@ namespace Hospital_Management.Migrations
                     b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("Hospital_Management.Model.Patient", b =>
-                {
-                    b.HasOne("Hospital_Management.Model.User", null)
-                        .WithMany("Patients")
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("Hospital_Management.Model.User", b =>
                 {
                     b.HasOne("Hospital_Management.Model.User", "Admin")
                         .WithMany("UserAdminIds")
                         .HasForeignKey("AdminId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Admin");
                 });
@@ -447,11 +448,12 @@ namespace Hospital_Management.Migrations
 
                     b.Navigation("DoctorAdminIds");
 
-                    b.Navigation("Patients");
-
                     b.Navigation("UserAdminIds");
 
                     b.Navigation("Users");
+
+                    b.Navigation("doctor")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

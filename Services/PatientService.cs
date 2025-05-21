@@ -17,7 +17,7 @@ namespace Hospital_Management.Services
         {
             var result = new ResponseModel<List<Patient>>();
             var data = await _db.Patients.ToListAsync();
-            if(data.IsNullOrEmpty())
+            if(data == null)
                 throw new FileNotFoundException("Patients not found.");
             result.SetSeccess(data);
             return result;

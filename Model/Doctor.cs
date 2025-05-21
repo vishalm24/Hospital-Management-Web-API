@@ -7,12 +7,12 @@ namespace Hospital_Management.Model
     {
         [Key]
         public int Id { get; set; }
-        
-        [Required]
         [ForeignKey("Department")]
         public int DepartmentId { get; set; }
         public virtual Department Department { get; set; }
-        [Required]
+        [ForeignKey("User")]
+        public int DoctorId { get; set; }
+        public virtual User user { get; set; }
         [ForeignKey("User")]
         public int AdminId { get; set; }
         public virtual User Admin { get; set; }

@@ -27,14 +27,13 @@ namespace Hospital_Management.Model
         [Required]
         public string State { get; set; }
         public bool IsActive { get; set; }
-        [Required]
         [ForeignKey("User")]
-        public int AdminId { get; set; }
+        public int? AdminId { get; set; }
         public virtual User Admin { get; set; }
         public ICollection<User> UserAdminIds { get; set; }
         public ICollection<Leave> DoctorAdminIds { get; set; }
         public ICollection<Doctor> Users { get; set; }
-        public ICollection<Patient> Patients { get; set; }
         public ICollection<Appointment> Appointments { get; set; }
+        public Doctor doctor { get; set; }
     }
 }
