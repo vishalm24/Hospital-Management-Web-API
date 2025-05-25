@@ -17,6 +17,12 @@
             Message = "Success";
             Data = data;
         }
+        public void SetConflict(T data)
+        {
+            StatusCode = 409;
+            Message = "Conflict";
+            Data = data;
+        }
         //public void SetFailure(string message)
         //{
         //    StatusCode = 417;

@@ -137,7 +137,8 @@ namespace Hospital_Management.Services
             {
                 DepartmentId = model.DepartmentId,
                 DoctorId = user.Id,
-                AdminId = admin.Id
+                AdminId = admin.Id,
+                Specialization = model.Specialization
             };
             await _db.Doctors.AddAsync(doctor);
             await _db.SaveChangesAsync();

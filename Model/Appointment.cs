@@ -22,9 +22,9 @@ namespace Hospital_Management.Model
         [Required]
         public DateTime CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
+        public DateOnly AppointmentDate { get; set; }
         [Required]
-        public DateTime AppointmentStart { get; set; }
-        public DateTime AppointmentEnd { get; set; }
+        public int DaySlot { get; set; }
         [Required]
         public string AppointmentStatus { get; set; }
     }

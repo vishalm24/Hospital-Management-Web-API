@@ -26,6 +26,7 @@ namespace Hospital_Management
             builder.Services.AddScoped<IPatientService, PatientService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IDoctorService, DoctorService>();
 
             builder.Services.AddAuthentication(options =>
             {
@@ -50,6 +51,7 @@ namespace Hospital_Management
 
             builder.Services.AddAuthorization();
             builder.Services.AddHttpContextAccessor();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

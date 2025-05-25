@@ -14,5 +14,6 @@ namespace Hospital_Management.Model.DTO
         public string City { get; set; }
         public string State { get; set; }
         public int DepartmentId { get; set; }
+        public string Specialization { get; set; }
     }
 }

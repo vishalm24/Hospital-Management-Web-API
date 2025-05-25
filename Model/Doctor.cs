@@ -13,6 +13,7 @@ namespace Hospital_Management.Model
         [ForeignKey("User")]
         public int DoctorId { get; set; }
         public virtual User user { get; set; }
+        public string Specialization { get; set; }
         [ForeignKey("User")]
         public int AdminId { get; set; }
         public virtual User Admin { get; set; }

@@ -7,7 +7,7 @@ namespace Hospital_Management.Services.IServices
     {
         public Task<ResponseModel<List<DepartmentDTO>>> GetAllDepartments();
         public Task<ResponseModel<DepartmentDTO>> AddDepartment(DepartmentAddDTO departmentAddDTO);
-        public Task<ResponseModel<string>> UpdateDepartment(Department department);
+        public Task<ResponseModel<string>> UpdateDepartment(DepartmentDTO departmentUpdateDTO);
         public Task<ResponseModel<string>> DeleteDepartment(int id);
     }
 }

@@ -18,15 +18,27 @@ namespace Hospital_Management.Services
         public async Task<ResponseModel<DepartmentDTO>> AddDepartment(DepartmentAddDTO departmentAddDTO)
         {
             var result = new ResponseModel<DepartmentDTO>();
-            var isExist = await _db.Departments.AnyAsync(d => d.Name == departmentAddDTO.Name);
-            if (isExist)
-                throw new ConflictException("Department already exists.");
-            var department = new Department
+            var department = await _db.Departments.Where(d => d.Name == departmentAddDTO.Name).FirstOrDefaultAsync();
+            if (department != null && department.IsActive == false)
             {
-                Name = departmentAddDTO.Name,
-                IsActive = true
-            };
-            await _db.Departments.AddAsync(department);
+                department.IsActive = true;
+                _db.Departments.Update(department);
+                result.SetSeccess(ShowDetails(department));
+            }
+            else if (department != null)
+            {
+                result.SetConflict(ShowDetails(department));
+                throw new ConflictException("Department already exists.");
+            }
+            else
+            {
+                department = new Department
+                {
+                    Name = departmentAddDTO.Name,
+                    IsActive = true
+                };
+                await _db.Departments.AddAsync(department);
+            }
             await _db.SaveChangesAsync();
             result.SetSeccess(ShowDetails(department));
             return result;
@@ -69,6 +81,8 @@ namespace Hospital_Management.Services
             if (department == null)
                 throw new NotFoundException($"Department consisting id {id} does not exist.");
             department.IsActive = false;
+            _db.Departments.Update(department);
+            await _db.SaveChangesAsync();
             result.SetSeccess($"Department {department.Name} is deleted successfully.");
             return result;
         }
@@ -76,11 +90,11 @@ namespace Hospital_Management.Services
         public async Task<ResponseModel<List<DepartmentDTO>>> GetAllDepartments()
         {
             var result = new ResponseModel<List<DepartmentDTO>>();
-            var department = await _db.Departments.Where(d => d.IsActive == true).ToListAsync();
-            if (department == null)
+            var departments = await _db.Departments.Where(d => d.IsActive == true).ToListAsync();
+            if (departments == null)
                 throw new NotFoundException("Department does not exist.");
             var data = new List<DepartmentDTO>();
-            foreach (var item in department)
+            foreach (var item in departments)
             {
                 data.Add(ShowDetails(item));
             }
@@ -100,7 +114,8 @@ namespace Hospital_Management.Services
             if (!string.IsNullOrEmpty(departmentUpdateDTO.Name))
                 department.Name = departmentUpdateDTO.Name;
             _db.Departments.Update(department);
-            result.SetSeccess($"Department consiting Id = {departmentUpdateDTO} is updated");
+            await _db.SaveChangesAsync();
+            result.SetSeccess($"Department consiting Id = {departmentUpdateDTO.Id} is updated");
             return result;
         }
 
