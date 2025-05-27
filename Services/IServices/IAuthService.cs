@@ -5,9 +5,10 @@ namespace Hospital_Management.Services.IServices
 {
     public interface IAuthService
     {
-        public Task<string> Login(LoginRequest model);
-        public Task<string> RegisterAdmin(RegisterRequest model);
-        public Task<string> RegisterReceptionist(RegisterRequest model);
-        public Task<string> RegisterDoctor(RegisterDoctorRequest model);
+        Task<string> Login(LoginRequest model);
+        Task<string> RegisterAdmin(RegisterRequest model);
+        Task<string> RegisterReceptionist(RegisterRequest model);
+        Task<string> RegisterDoctor(RegisterDoctorRequest model);
+        Task<ResponseModel<string>> PasswordChange();
     }
 }

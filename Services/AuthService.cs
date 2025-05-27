@@ -4,9 +4,8 @@ using Hospital_Management.Helper;
 using Hospital_Management.Model;
 using Hospital_Management.Model.DTO;
 using Hospital_Management.Services.IServices;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Claims;
 
 namespace Hospital_Management.Services
@@ -143,6 +142,17 @@ namespace Hospital_Management.Services
             await _db.Doctors.AddAsync(doctor);
             await _db.SaveChangesAsync();
             return $"New Receptionist created. UserName : {user.Username}";
+        }
+        public async Task<ResponseModel<string>> PasswordChange()
+        {
+            var result = new ResponseModel<string>();
+            var userName = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Username == userName);
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            _db.Users.Update(user);
+            await _db.SaveChangesAsync();
+            result.SetSeccess($"{user.Username} has changed password.");
+            return result;
         }
     }
 }

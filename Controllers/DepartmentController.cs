@@ -2,6 +2,7 @@
 using Hospital_Management.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Hospital_Management.Controllers
 {
@@ -18,6 +19,27 @@ namespace Hospital_Management.Controllers
         public async Task<IActionResult> AddDepartment([FromBody] DepartmentAddDTO departmentAddDTO)
         {
             return Ok(await _departmentService.AddDepartment(departmentAddDTO));
+        }
+        [HttpGet]
+        [Route("AllDepartments")]
+        [Authorize(Roles = "Admin,Receptionist")]
+        public async Task<IActionResult> GetAllDepartments()
+        {
+            return Ok(await _departmentService.GetAllDepartments());
+        }
+        [HttpPut]
+        [Route("EditDepartment")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateDepartment([FromBody] DepartmentDTO departmentUpdateDTO)
+        {
+            return Ok(await _departmentService.UpdateDepartment(departmentUpdateDTO));
+        }
+        [HttpDelete]
+        [Route("RemoveDepartment")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteDepartment(int id)
+        {
+            return Ok(await _departmentService.DeleteDepartment(id));
         }
     }
 }

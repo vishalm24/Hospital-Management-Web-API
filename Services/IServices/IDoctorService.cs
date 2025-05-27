@@ -5,6 +5,9 @@ namespace Hospital_Management.Services.IServices
 {
     public interface IDoctorService
     {
-        public Task<ResponseModel<List<DoctorDTO>>> GetAllDoctors();
+        Task<ResponseModel<List<DoctorDTO>>> GetAllDoctors();
+        Task<ResponseModel<DoctorDTO>> GetDoctorById(int id)
+        Task<ResponseModel<string>> UpdateDoctor(DoctorUpdateDTO doctorUpdateDTO);
+        Task<ResponseModel<string>> DeleteDoctor(int id);
     }
 }
