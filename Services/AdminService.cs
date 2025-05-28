@@ -16,6 +16,7 @@ namespace Hospital_Management.Services
         public async Task<ResponseModel<LeaveGetDTO>> GetPendingLeaves()
         {
             var result = new ResponseModel<LeaveGetDTO>();
+
             return result;
         }
         public async Task<ResponseModel<string>> UpdateDoctorLeave(LeaveUpdateDTO leaveUpdateDTO)
