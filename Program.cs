@@ -60,6 +60,7 @@ namespace Hospital_Management
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
             builder.Services.AddScoped<IDoctorService, DoctorService>();
+            builder.Services.AddScoped<IAdminService, AdminService>();
 
             builder.Services.AddAuthentication(options =>
             {

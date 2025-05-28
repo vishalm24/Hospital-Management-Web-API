@@ -19,5 +19,33 @@ namespace Hospital_Management.Controllers
         {
             return Ok(await _departmentService.AddDepartment(departmentAddDTO));
         }
+        [HttpGet]
+        [Route("GetAllDepartments")]
+        [Authorize(Roles = "Admin,Receptionist,Doctor")]
+        public async Task<IActionResult> GetAllDepartments()
+        {
+            return Ok(await _departmentService.GetAllDepartments());
+        }
+        [HttpGet]
+        [Route("GetDepartmentById/{id}")]
+        [Authorize(Roles = "Admin,Receptionist,Doctor")]
+        public async Task<IActionResult> GetDepartmentById(int id)
+        {
+            return Ok(await _departmentService.GetDepartmentById(id));
+        }
+        [HttpPut]
+        [Route("UpdateDepartment")]
+        [Authorize("UpdateDepartment")]
+        public async Task<IActionResult> UpdateDepartment([FromBody] DepartmentDTO departmentUpdateDTO)
+        {
+            return Ok(await _departmentService.UpdateDepartment(departmentUpdateDTO));
+        }
+        [HttpDelete]
+        [Route("RemoveDepartment/{id}")]
+        [Authorize(Roles = "Admin,Receptionist,Doctor")]
+        public async Task<IActionResult> RemoveDepartment(int id)
+        {
+            return Ok(await _departmentService.DeleteDepartment(id));
+        }
     }
 }

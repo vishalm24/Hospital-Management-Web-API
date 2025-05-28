@@ -45,6 +45,13 @@ namespace Hospital_Management.Controllers
         {
             return Ok(await _authService.RegisterDoctor(register));
         }
+        [HttpPost]
+        [Route("PasswordChange")]
+        [Authorize]
+        public async Task<IActionResult> PasswordChange(string password)
+        {
+            return Ok(await _authService.PasswordChange(password));
+        }
         //[HttpPost]
         //[Route("RegisterFirstAdmin")]
         ////[Authorize("Admin")]
