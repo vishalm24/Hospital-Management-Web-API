@@ -3,6 +3,7 @@ using Hospital_Management.Exceptions;
 using Hospital_Management.Model;
 using Hospital_Management.Model.DTO;
 using Hospital_Management.Services.IServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hospital_Management.Services
 {
@@ -13,10 +14,21 @@ namespace Hospital_Management.Services
         {
             _db = db;
         }
-        public async Task<ResponseModel<LeaveGetDTO>> GetPendingLeaves()
-        {
-            var result = new ResponseModel<LeaveGetDTO>();
+        //public async Task<ResponseModel<LeaveGetDTO>> GetPendingLeaves()
+        //{
+        //    var result = new ResponseModel<LeaveGetDTO>();
 
+        //    return result;
+        //}
+        public async Task<ResponseModel<List<LeaveGetDTO>>> GetLeavesByStatus(string status)
+        {
+            if (string.IsNullOrEmpty(status))
+                status = "Pending";
+            var result = new ResponseModel<List<LeaveGetDTO>>();
+            var leaves = await _db.Set<LeaveGetDTO>().FromSqlRaw("Execute GetLeavesByStatus @Status={0}", status).ToListAsync();
+            if(leaves == null)
+                throw new NotFoundException($"No leaves found with the {status} status.");
+            result.SetSeccess(leaves);
             return result;
         }
         public async Task<ResponseModel<string>> UpdateDoctorLeave(LeaveUpdateDTO leaveUpdateDTO)

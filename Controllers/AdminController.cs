@@ -13,11 +13,11 @@ namespace Hospital_Management.Controllers
             _adminService = adminService;
         }
         [HttpGet]
-        [Route("GetPendingLeaves")]
+        [Route("GetLeavesByStatus")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetPendingLeaves()
+        public async Task<IActionResult> GetLeavesByStatus(string status)
         {
-            return Ok();
+            return Ok(await _adminService.GetLeavesByStatus(status));
         }
 
         [HttpPost]
