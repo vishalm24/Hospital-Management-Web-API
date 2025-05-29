@@ -5,9 +5,10 @@ namespace Hospital_Management.Services.IServices
 {
     public interface IDepartmentService
     {
-        public Task<ResponseModel<List<DepartmentDTO>>> GetAllDepartments();
-        public Task<ResponseModel<DepartmentDTO>> AddDepartment(DepartmentAddDTO departmentAddDTO);
-        public Task<ResponseModel<string>> UpdateDepartment(DepartmentDTO departmentUpdateDTO);
-        public Task<ResponseModel<string>> DeleteDepartment(int id);
+        Task<ResponseModel<List<DepartmentDTO>>> GetAllDepartments();
+        Task<ResponseModel<DepartmentDTO>> GetDepartmentById(int id);
+        Task<ResponseModel<DepartmentDTO>> AddDepartment(DepartmentAddDTO departmentAddDTO);
+        Task<ResponseModel<string>> UpdateDepartment(DepartmentDTO departmentUpdateDTO);
+        Task<ResponseModel<string>> DeleteDepartment(int id);
     }
 }

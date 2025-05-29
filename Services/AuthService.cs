@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace Hospital_Management.Services
 {
-    public class AuthService: IAuthService
+    public class AuthService : IAuthService
     {
         private readonly ApplicationDbContext _db;
         private readonly JwtTokenHelper _jwtHelper;
@@ -34,11 +34,33 @@ namespace Hospital_Management.Services
             return token;
         }
 
+        //public async Task<string> RegisterFirstAdmin(RegisterRequest model)
+        //{
+        //    var user = new User
+        //    {
+        //        Name = model.Name,
+        //        Username = model.Username,
+        //        Password = BCrypt.Net.BCrypt.HashPassword(model.Password),
+        //        Role = "Admin",
+        //        JoiningDate = DateOnly.FromDateTime(DateTime.Now),
+        //        Email = model.Email,
+        //        Phone = model.Phone,
+        //        Address = model.Address,
+        //        City = model.City,
+        //        State = model.State,
+        //        IsActive = true,
+        //        AdminId = null
+        //    };
+        //    await _db.Users.AddAsync(user);
+        //    await _db.SaveChangesAsync();
+        //    return $"New Admin created. UserName : {user.Username}";
+        //}
+
         public async Task<string> RegisterAdmin(RegisterRequest model)
         {
             var adminName = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
             var admin = await _db.Users.FirstOrDefaultAsync(u => u.Username == adminName);
-            if(admin == null)
+            if (admin == null)
                 throw new ForbiddenException("You are not authorized to create an admin account.");
             var user = new User
             {
@@ -141,7 +163,20 @@ namespace Hospital_Management.Services
             };
             await _db.Doctors.AddAsync(doctor);
             await _db.SaveChangesAsync();
-            return $"New Receptionist created. UserName : {user.Username}";
+            return $"New Dcotor created. UserName : {user.Username}";
+        }
+        public async Task<ResponseModel<string>> PasswordChange(string password)
+        {
+            var result = new ResponseModel<string>();
+            var userName = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Username == userName);
+            if (user == null)
+                throw new NotFoundException("User not found.");
+            user.Password = BCrypt.Net.BCrypt.HashPassword(password);
+            _db.Users.Update(user);
+            await _db.SaveChangesAsync();
+            result.SetSeccess($"{user.Name} has changed password");
+            return result;
         }
         public async Task<ResponseModel<string>> PasswordChange()
         {

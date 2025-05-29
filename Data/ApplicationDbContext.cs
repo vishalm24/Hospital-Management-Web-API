@@ -1,4 +1,5 @@
 ﻿using Hospital_Management.Model;
+using Hospital_Management.Model.DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hospital_Management.Data
@@ -14,8 +15,10 @@ namespace Hospital_Management.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<MedicalHistory> MedicalHistories { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Leave> Leaves { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Doctor>().HasOne(dc => dc.Department)
                 .WithMany(d => d.Doctors)
                 .HasForeignKey(dc => dc.DepartmentId)
@@ -59,6 +62,8 @@ namespace Hospital_Management.Data
                 .WithMany(u => u.DoctorAdminIds)
                 .HasForeignKey(l => l.AdminId)
                 .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<DoctorDTO>().HasNoKey().ToView(null);
+            modelBuilder.Entity<LeaveGetDTO>().HasNoKey().ToView(null);
         }
     }
 }

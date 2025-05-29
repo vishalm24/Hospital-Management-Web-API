@@ -18,6 +18,12 @@ namespace Hospital_Management.Controllers
         {
             return Ok(await _authService.Login(login));
         }
+        //[HttpPost]
+        //[Route("RegisterFirstAdmin")]
+        //public async Task<IActionResult> RegisterFirstAdmin([FromBody] RegisterRequest register)
+        //{
+        //    return Ok(await _authService.RegisterFirstAdmin(register));
+        //}
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [Route("RegisterAdmin")]
@@ -42,9 +48,9 @@ namespace Hospital_Management.Controllers
         [HttpPost]
         [Route("PasswordChange")]
         [Authorize]
-        public async Task<IActionResult> PasswordChange()
+        public async Task<IActionResult> PasswordChange(string password)
         {
-            return Ok(await _authService.PasswordChange());
+            return Ok(await _authService.PasswordChange(password));
         }
         //[HttpPost]
         //[Route("RegisterFirstAdmin")]

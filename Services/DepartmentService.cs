@@ -102,6 +102,16 @@ namespace Hospital_Management.Services
             return result;
         }
 
+        public async Task<ResponseModel<DepartmentDTO>> GetDepartmentById(int id)
+        {
+            var result = new ResponseModel<DepartmentDTO>();
+            var department = await _db.Departments.FirstOrDefaultAsync(d => d.Id == id && d.IsActive == true);
+            if(department == null)
+                throw new NotFoundException($"Department consisting id {id} does not exist.");
+            result.SetSeccess(ShowDetails(department));
+            return result;
+        } 
+
         public async Task<ResponseModel<string>> UpdateDepartment(DepartmentDTO departmentUpdateDTO)
         {
             var result = new ResponseModel<string>();

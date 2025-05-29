@@ -67,7 +67,7 @@ namespace Hospital_Management.Middlewares
                 default:
                     exModel.StatusCode = (int)HttpStatusCode.InternalServerError;
                     response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    exModel.Message = "Internal server error. Please try later.";
+                    exModel.Message = ex.Message;
                     break;
             }
             var result = JsonSerializer.Serialize(exModel);
