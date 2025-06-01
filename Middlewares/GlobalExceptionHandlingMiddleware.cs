@@ -6,6 +6,7 @@ using Hospital_Management.Model;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Hospital_Management.Exceptions;
+using Hospital_Management.Services.IServices;
 
 namespace Hospital_Management.Middlewares
 {
@@ -16,7 +17,7 @@ namespace Hospital_Management.Middlewares
         {
             _next = next;
         }
-        public async Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext context, ICustomLogger customLogger)
         {
             try
             {
@@ -24,14 +25,16 @@ namespace Hospital_Management.Middlewares
             }
             catch (Exception ex)
             {
-                await HandlerExceptionAsync(context, ex);
+                await HandlerExceptionAsync(context, ex, customLogger);
             }
         }
-        public async Task HandlerExceptionAsync(HttpContext context, Exception ex)
+        public async Task HandlerExceptionAsync(HttpContext context, Exception ex, ICustomLogger customLogger)
         {
             context.Response.ContentType = "application/json";
             var response = context.Response;
             ResponseModel<string> exModel = new ResponseModel<string>();
+            string cid = context.Items["CID"]?.ToString()?? Guid.NewGuid().ToString();
+            await customLogger.LogAsync(cid, ex.Message, TimeOnly.MinValue);
             switch (ex)
             {
                 case BadRequestException:

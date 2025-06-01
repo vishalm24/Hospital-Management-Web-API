@@ -5,6 +5,8 @@ using Hospital_Management.Model.DTO;
 using Hospital_Management.Services.IServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 
 namespace Hospital_Management.Services
@@ -118,6 +120,27 @@ namespace Hospital_Management.Services
             result.SetSeccess(ShowDetails(patient));
             return result;
         }
+        public async Task<ResponseModel<MedicalReportDTO>> AddMedicalHistory(MedicalReportAddDTO medicalReportAddDTO)
+        {
+            var result = new ResponseModel<MedicalReportDTO>();
+            var patient = await _db.Patients.FirstOrDefaultAsync(p => p.Id == medicalReportAddDTO.PatientId && p.IsActive == true);
+            if (patient == null)
+                throw new NotFoundException("Patient not found.");
+            var medicalHistory = new MedicalHistory();
+            medicalHistory.PatientId = medicalReportAddDTO.PatientId;
+            medicalHistory.DoctorId = medicalReportAddDTO.DoctorId;
+            medicalHistory.DepartmentId = medicalReportAddDTO.DepartmentId;
+            medicalHistory.Symptoms = medicalReportAddDTO.Symptoms;
+            medicalHistory.Diagnose = medicalReportAddDTO.Diagnose;
+            medicalHistory.Treatments = medicalReportAddDTO.Treatments;
+            medicalHistory.PastContactedDate = medicalReportAddDTO.PastContactedDate;
+            medicalHistory.CreatedDate = DateTime.Now;
+            medicalHistory.ModifiedDate = DateTime.Now;
+            _db.MedicalHistories.Add(medicalHistory);
+            await _db.SaveChangesAsync();
+            result.SetSeccess();
+            return result;
+    }
         public PatientDTO ShowDetails(Patient patient)
         {
             return new PatientDTO
@@ -134,5 +157,9 @@ namespace Hospital_Management.Services
                 ActiveTreatment = patient.ActiveTreatment
             };
         }
+        //public MedicalReportDTO ShowMedicalReport(MedicalHistory medicalHistory)
+        //{
+        //    var medicalReport = new MedicalReportDTO();
+        //}
     }
 }

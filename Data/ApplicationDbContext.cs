@@ -16,6 +16,7 @@ namespace Hospital_Management.Data
         public DbSet<MedicalHistory> MedicalHistories { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Leave> Leaves { get; set; }
+        public DbSet<LogEntry> LogEntries { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

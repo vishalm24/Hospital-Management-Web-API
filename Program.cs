@@ -62,6 +62,7 @@ namespace Hospital_Management
             builder.Services.AddScoped<IDoctorService, DoctorService>();
             builder.Services.AddScoped<IAdminService, AdminService>();
             builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+            builder.Services.AddScoped<ICustomLogger, CustomLogger>();
 
             builder.Services.AddAuthentication(options =>
             {
@@ -96,6 +97,7 @@ namespace Hospital_Management
                 app.UseSwaggerUI();
             }
 
+            app.UseMiddleware<LogMIddleware>();
             app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
             app.UseHttpsRedirection();
