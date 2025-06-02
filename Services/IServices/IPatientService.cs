@@ -11,5 +11,9 @@ namespace Hospital_Management.Services.IServices
         public Task<ResponseModel<string>> UpdatePatient(PatientDTO patientDTO);
         public Task<ResponseModel<string>> DeletePatient(int id);
         public Task<ResponseModel<PatientDTO>> SearchPatient(string search);
+        Task<ResponseModel<MedicalHistory>> AddMedicalHistory(MedicalReportAddDTO medicalReportAddDTO);
+        Task<ResponseModel<string>> UpdateMedicalHistory(MedicalReportUpdateDTO medicalReportUpdateDTO);
+        Task<ResponseModel<List<MedicalHistory>>> GetHistoryByPatientId(int patientId);
+        Task<ResponseModel<string>> RemoveMedicalHistory(int Id);
     }
 }

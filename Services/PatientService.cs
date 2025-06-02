@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace Hospital_Management.Services
 {
@@ -120,27 +121,6 @@ namespace Hospital_Management.Services
             result.SetSeccess(ShowDetails(patient));
             return result;
         }
-        public async Task<ResponseModel<MedicalReportDTO>> AddMedicalHistory(MedicalReportAddDTO medicalReportAddDTO)
-        {
-            var result = new ResponseModel<MedicalReportDTO>();
-            var patient = await _db.Patients.FirstOrDefaultAsync(p => p.Id == medicalReportAddDTO.PatientId && p.IsActive == true);
-            if (patient == null)
-                throw new NotFoundException("Patient not found.");
-            var medicalHistory = new MedicalHistory();
-            medicalHistory.PatientId = medicalReportAddDTO.PatientId;
-            medicalHistory.DoctorId = medicalReportAddDTO.DoctorId;
-            medicalHistory.DepartmentId = medicalReportAddDTO.DepartmentId;
-            medicalHistory.Symptoms = medicalReportAddDTO.Symptoms;
-            medicalHistory.Diagnose = medicalReportAddDTO.Diagnose;
-            medicalHistory.Treatments = medicalReportAddDTO.Treatments;
-            medicalHistory.PastContactedDate = medicalReportAddDTO.PastContactedDate;
-            medicalHistory.CreatedDate = DateTime.Now;
-            medicalHistory.ModifiedDate = DateTime.Now;
-            _db.MedicalHistories.Add(medicalHistory);
-            await _db.SaveChangesAsync();
-            result.SetSeccess();
-            return result;
-    }
         public PatientDTO ShowDetails(Patient patient)
         {
             return new PatientDTO
@@ -157,9 +137,59 @@ namespace Hospital_Management.Services
                 ActiveTreatment = patient.ActiveTreatment
             };
         }
-        //public MedicalReportDTO ShowMedicalReport(MedicalHistory medicalHistory)
-        //{
-        //    var medicalReport = new MedicalReportDTO();
-        //}
+        public async Task<ResponseModel<MedicalHistory>> AddMedicalHistory(MedicalReportAddDTO medicalReportAddDTO)
+        {
+            var result = new ResponseModel<MedicalHistory>();
+            var patient = await _db.Patients.FirstOrDefaultAsync(p => p.Id == medicalReportAddDTO.PatientId && p.IsActive == true);
+            if (patient == null)
+                throw new NotFoundException("Patient not found.");
+            var medicalHistory = new MedicalHistory();
+            medicalHistory.PatientId = medicalReportAddDTO.PatientId;
+            medicalHistory.DoctorId = medicalReportAddDTO.DoctorId;
+            medicalHistory.DepartmentId = medicalReportAddDTO.DepartmentId;
+            medicalHistory.Symptoms = medicalReportAddDTO.Symptoms;
+            medicalHistory.Diagnose = medicalReportAddDTO.Diagnose;
+            medicalHistory.Treatments = medicalReportAddDTO.Treatments;
+            medicalHistory.PastContactedDate = medicalReportAddDTO.PastContactedDate;
+            medicalHistory.CreatedDate = DateTime.Now;
+            medicalHistory.ModifiedDate = DateTime.Now;
+            _db.MedicalHistories.Add(medicalHistory);
+            await _db.SaveChangesAsync();
+            result.SetSeccess(medicalHistory);
+            return result;
+        }
+        public async Task<ResponseModel<string>> UpdateMedicalHistory(MedicalReportUpdateDTO medicalReportUpdateDTO)
+        {
+            var result = new ResponseModel<string>();
+            var medicalHistory = await _db.MedicalHistories.FirstOrDefaultAsync(m => m.Id == medicalReportUpdateDTO.Id);
+            medicalHistory.DoctorId = medicalReportUpdateDTO.DoctorId;
+            medicalHistory.DepartmentId = medicalReportUpdateDTO.DepartmentId;
+            medicalHistory.Symptoms = medicalReportUpdateDTO.Symptoms;
+            medicalHistory.Diagnose = medicalReportUpdateDTO.Treatments;
+            _db.MedicalHistories.Update(medicalHistory);
+            await _db.SaveChangesAsync();
+            result.SetSeccess($"{medicalHistory.Id} is updated Sucessfully.");
+            return result;
+        }
+        public async Task<ResponseModel<List<MedicalHistory>>> GetHistoryByPatientId(int patientId)
+        {
+            var result = new ResponseModel<List<MedicalHistory>>();
+            var medicalHistories = await _db.MedicalHistories.Where(m => m.PatientId == patientId).ToListAsync();
+            if(medicalHistories == null)
+                throw new NotFoundException("Medical history not found for this patient.");
+            result.SetSeccess(medicalHistories);
+            return result;
+        }
+        public async Task<ResponseModel<string>> RemoveMedicalHistory(int Id)
+        {
+            var result = new ResponseModel<string>();
+            var medicalHistory = await _db.MedicalHistories.FirstOrDefaultAsync(m => m.Id == Id);
+            if (medicalHistory == null)
+                throw new NotFoundException("Medical history not found.");
+            _db.MedicalHistories.Remove(medicalHistory);
+            await _db.SaveChangesAsync();
+            result.SetSeccess($"Medical history with Id: {Id} deleted successfully.");
+            return result;
+        }
     }
 }

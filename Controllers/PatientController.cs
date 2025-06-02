@@ -48,5 +48,33 @@ namespace Hospital_Management.Controllers
         {
             return Ok(await _patientService.SearchPatient(search));
         }
+        [HttpPost]
+        [Route("AddReport")]
+        [Authorize(Roles = "Receptionist")]
+        public async Task<IActionResult> AddMedicalHistory([FromBody] MedicalReportAddDTO medicalReportAddDTO)
+        {
+            return Ok(await _patientService.AddMedicalHistory(medicalReportAddDTO));
+        }
+        [HttpPut]
+        [Route("UpdateReport")]
+        [Authorize(Roles = "Receptionist")]
+        public async Task<IActionResult> UpdateMedicalHistory([FromBody] MedicalReportUpdateDTO medicalReportUpdateDTO)
+        {
+            return Ok(await _patientService.UpdateMedicalHistory(medicalReportUpdateDTO));
+        }
+        [HttpGet]
+        [Route("GetHistoryByPatientId")]
+        [Authorize(Roles = "Receptionist")]
+        public async Task<IActionResult> GetHistoryByPatientId(int patientId)
+        {
+            return Ok(await _patientService.GetHistoryByPatientId(patientId));
+        }
+        [HttpDelete]
+        [Route("RemoveHistory")]
+        [Authorize(Roles = "Receptionist")]
+        public async Task<IActionResult> RemoveMedicalHistory(int id)
+        {
+            return Ok(await _patientService.RemoveMedicalHistory(id));
+        }
     }
 }
