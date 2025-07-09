@@ -49,6 +49,10 @@ namespace Hospital_Management.Data
             modelBuilder.Entity<MedicalHistory>().HasOne(a => a.Patient)
                 .WithMany(p => p.MedicalHistories)
                 .HasForeignKey(a => a.PatientId);
+            modelBuilder.Entity<MedicalHistory>().HasOne(a => a.Appointment)
+                .WithOne(m => m.MedicalHistory)
+                .HasForeignKey<MedicalHistory>(a => a.AppointmentId)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<MedicalHistory>().HasOne(a => a.Doctor)
                 .WithMany(dc => dc.MedicalHistories)
                 .HasForeignKey(a => a.DoctorId)

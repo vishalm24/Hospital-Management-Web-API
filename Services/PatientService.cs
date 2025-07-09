@@ -80,7 +80,7 @@ namespace Hospital_Management.Services
             result.SetSeccess(ShowDetails(patient));
             return result;
         }
-        public async Task<ResponseModel<string>> UpdatePatient(PatientDTO patientDTO)
+        public async Task<ResponseModel<string>> UpdatePatient(PatientUpdateDTO patientDTO)
         {
             var result = new ResponseModel<string>();
             var patient = await _db.Patients.FirstOrDefaultAsync(p => p.Id == patientDTO.Id);
@@ -89,7 +89,6 @@ namespace Hospital_Management.Services
             patient.Name = patientDTO.Name;
             patient.Phone = patientDTO.Phone;
             patient.Email = patientDTO.Email;
-            patient.CreatedDate = patientDTO.CreatedDate;
             patient.BirthDate = patientDTO.BirthDate;
             patient.Address = patientDTO.Address;
             patient.City = patientDTO.City;
@@ -98,7 +97,7 @@ namespace Hospital_Management.Services
             patient.IsActive = true;
             _db.Patients.Update(patient);
             await _db.SaveChangesAsync();
-            result.SetSeccess($"Patient consiting Id = {patientDTO.Id} is updated");
+            result.SetSeccess($"Patient consisting Id = {patientDTO.Id} is updated");
             return result;
         }
         public async Task<ResponseModel<string>> DeletePatient(int id)
@@ -145,6 +144,7 @@ namespace Hospital_Management.Services
                 throw new NotFoundException("Patient not found.");
             var medicalHistory = new MedicalHistory();
             medicalHistory.PatientId = medicalReportAddDTO.PatientId;
+            medicalHistory.AppointmentId = medicalReportAddDTO.AppointmentId;
             medicalHistory.DoctorId = medicalReportAddDTO.DoctorId;
             medicalHistory.DepartmentId = medicalReportAddDTO.DepartmentId;
             medicalHistory.Symptoms = medicalReportAddDTO.Symptoms;

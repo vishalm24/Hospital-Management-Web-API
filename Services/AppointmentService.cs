@@ -58,6 +58,8 @@ namespace Hospital_Management.Services
                 DaySlot = appointmentAddDTO.DaySlot,
                 AppointmentStatus = "Booked",
             };
+            await _db.AddAsync(apppointment);
+            await _db.SaveChangesAsync();
             result.SetSeccess($"Appointment booked successfully for {appointmentAddDTO.AppointmentDate} at {appointmentAddDTO.DaySlot} slot.");
             return result;
         }

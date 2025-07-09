@@ -27,5 +27,6 @@ namespace Hospital_Management.Model
         public int DaySlot { get; set; }
         [Required]
         public string AppointmentStatus { get; set; }
+        public MedicalHistory MedicalHistory { get; set; }
     }
 }

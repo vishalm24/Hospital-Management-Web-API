@@ -35,7 +35,7 @@ namespace Hospital_Management.Controllers
         }
         [HttpPut]
         [Route("UpdateDepartment")]
-        [Authorize("UpdateDepartment")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateDepartment([FromBody] DepartmentDTO departmentUpdateDTO)
         {
             return Ok(await _departmentService.UpdateDepartment(departmentUpdateDTO));

@@ -34,27 +34,27 @@ namespace Hospital_Management.Services
             return token;
         }
 
-        //public async Task<string> RegisterFirstAdmin(RegisterRequest model)
-        //{
-        //    var user = new User
-        //    {
-        //        Name = model.Name,
-        //        Username = model.Username,
-        //        Password = BCrypt.Net.BCrypt.HashPassword(model.Password),
-        //        Role = "Admin",
-        //        JoiningDate = DateOnly.FromDateTime(DateTime.Now),
-        //        Email = model.Email,
-        //        Phone = model.Phone,
-        //        Address = model.Address,
-        //        City = model.City,
-        //        State = model.State,
-        //        IsActive = true,
-        //        AdminId = null
-        //    };
-        //    await _db.Users.AddAsync(user);
-        //    await _db.SaveChangesAsync();
-        //    return $"New Admin created. UserName : {user.Username}";
-        //}
+        public async Task<string> RegisterFirstAdmin(RegisterRequest model)
+        {
+            var user = new User
+            {
+                Name = model.Name,
+                Username = model.Username,
+                Password = BCrypt.Net.BCrypt.HashPassword(model.Password),
+                Role = "Admin",
+                JoiningDate = DateOnly.FromDateTime(DateTime.Now),
+                Email = model.Email,
+                Phone = model.Phone,
+                Address = model.Address,
+                City = model.City,
+                State = model.State,
+                IsActive = true,
+                AdminId = null
+            };
+            await _db.Users.AddAsync(user);
+            await _db.SaveChangesAsync();
+            return $"New Admin created. UserName : {user.Username}";
+        }
 
         public async Task<string> RegisterAdmin(RegisterRequest model)
         {

@@ -25,7 +25,7 @@ namespace Hospital_Management.Services
             if (string.IsNullOrEmpty(status))
                 status = "Pending";
             var result = new ResponseModel<List<LeaveGetDTO>>();
-            var leaves = await _db.Set<LeaveGetDTO>().FromSqlRaw("Execute GetLeavesByStatus @Status={0}", status).ToListAsync();
+            var leaves = await _db.Set<LeaveGetDTO>().FromSqlInterpolated($"Execute GetLeavesByStatus @Status={status}").ToListAsync();
             if(leaves == null)
                 throw new NotFoundException($"No leaves found with the {status} status.");
             result.SetSeccess(leaves);

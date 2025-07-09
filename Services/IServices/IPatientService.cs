@@ -8,7 +8,7 @@ namespace Hospital_Management.Services.IServices
         public Task<ResponseModel<List<PatientDTO>>> GetAllPatients();
         public Task<ResponseModel<PatientDTO>> GetPatientById(int id);
         public Task<ResponseModel<PatientDTO>> AddPatient(PatientAddDTO patientAddDTO);
-        public Task<ResponseModel<string>> UpdatePatient(PatientDTO patientDTO);
+        public Task<ResponseModel<string>> UpdatePatient(PatientUpdateDTO patientDTO);
         public Task<ResponseModel<string>> DeletePatient(int id);
         public Task<ResponseModel<PatientDTO>> SearchPatient(string search);
         Task<ResponseModel<MedicalHistory>> AddMedicalHistory(MedicalReportAddDTO medicalReportAddDTO);

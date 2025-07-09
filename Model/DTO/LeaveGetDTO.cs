@@ -10,7 +10,6 @@ namespace Hospital_Management.Model.DTO
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }
         public string Reason { get; set; }
-        public string Status { get; set; }
         public string AdminName { get; set; }
     }
 }
