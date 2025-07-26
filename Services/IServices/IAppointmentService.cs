@@ -10,5 +10,6 @@ namespace Hospital_Management.Services.IServices
         Task<ResponseModel<string>> BookAppointment(AppointmentAddDTO appointmentAddDTO);
         Task<ResponseModel<string>> RescheduleAppointment(int appointmentId, DateOnly newDate, int newSlot);
         Task<ResponseModel<string>> CancelAppointment(int appointmentId);
+        Task Prank();
     }
 }

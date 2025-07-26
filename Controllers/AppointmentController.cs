@@ -46,5 +46,12 @@ namespace Hospital_Management.Controllers
         {
             return Ok(await _appointmentService.CancelAppointment(appointmentId));
         }
+        [HttpGet]
+        [Route("Prank")]
+        public async Task<IActionResult> Prank()
+        {
+            await _appointmentService.Prank();
+            return Ok("Prank executed successfully.");
+        }
     }
 }

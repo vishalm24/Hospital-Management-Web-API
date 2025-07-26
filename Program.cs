@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using DotNetEnv;
+Env.Load();
 
 
 namespace Hospital_Management
@@ -63,6 +65,8 @@ namespace Hospital_Management
             builder.Services.AddScoped<IAdminService, AdminService>();
             builder.Services.AddScoped<IAppointmentService, AppointmentService>();
             builder.Services.AddScoped<ICustomLogger, CustomLogger>();
+            builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddScoped<IReportService, ReportService>();
 
             builder.Services.AddAuthentication(options =>
             {

@@ -17,6 +17,7 @@ namespace Hospital_Management.Data
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Leave> Leaves { get; set; }
         public DbSet<LogEntry> LogEntries { get; set; }
+        public DbSet<DocDept> DocDept { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -69,6 +70,7 @@ namespace Hospital_Management.Data
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<DoctorDTO>().HasNoKey().ToView(null);
             modelBuilder.Entity<LeaveGetDTO>().HasNoKey().ToView(null);
+            modelBuilder.Entity<DocDept>().HasNoKey().ToView(null);
         }
     }
 }

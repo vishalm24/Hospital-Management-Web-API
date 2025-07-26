@@ -18,6 +18,12 @@ namespace Hospital_Management.Controllers
         {
             return Ok(await _reportService.GetDailyAppointmentsByDoctor(doctorId, date));
         }
-
+        [HttpGet]
+        [Route("GetPatientFequency")]
+        [Authorize(Roles = "Admin, Doctor, Receptionist")]
+        public async Task<IActionResult> PatientVisitReport(int patientId)
+        {
+            return Ok(await _reportService.PatientVisitReport(patientId));
+        }
     }
 }
